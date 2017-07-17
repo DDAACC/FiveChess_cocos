@@ -23,9 +23,8 @@ function GameScene:ctor()
     	end
     end
 
-    chessBoard[3][4]:setChess(1)
-    chessBoard[3][5]:setChess(1)
-    chessBoard[7][6]:setChess(0)
+
+
 
     local scheduler = cc.Director:getInstance():getScheduler()
     local schedulerID = nil

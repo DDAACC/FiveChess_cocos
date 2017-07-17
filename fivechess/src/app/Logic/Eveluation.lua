@@ -47,6 +47,17 @@ function Eveluation:ctor()
     self.m_LineRecord={}
     self.TypeRecord={}
     self.TypeCount={}
+
+    local p={}
+    for i=0,14 do
+        p[i]={}
+        for j=0,14 do
+            p[i][j]=0xFF
+        end
+    end
+    p[3][4]=1
+    p[3][5]=1
+    print(self:Eveluate(p))
 end
 
 
@@ -197,7 +208,7 @@ function Eveluation:Eveluate(position,bIsBlackTurn)
      		WValue=WValue+self.TypeCount[WHITE][TWO]*4
      	end
      	if self.TypeCount[BLACK][TWO]==1 then
-     		BValue=BValue+self.TypeCount[BLACK][SWO]*4
+     		BValue=BValue+self.TypeCount[BLACK][TWO]*4
      	end
      	if self.TypeCount[WHITE][STWO]==1 then
      		WValue=WValue+self.TypeCount[WHITE][STWO]
@@ -252,7 +263,7 @@ function Eveluation:Eveluate(position,bIsBlackTurn)
      		WValue=WValue+self.TypeCount[BLACK][TWO]*4
      	end
      	if self.TypeCount[WHITE][TWO]==1 then
-     		BValue=BValue+self.TypeCount[WHITE][SWO]*4
+     		BValue=BValue+self.TypeCount[WHITE][TWO]*4
      	end
      	if self.TypeCount[BLACK][STWO]==1 then
      		WValue=WValue+self.TypeCount[BLACK][STWO]
