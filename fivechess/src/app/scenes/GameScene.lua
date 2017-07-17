@@ -1,6 +1,7 @@
 Eveluation=require("app.Logic.Eveluation")
 Difficult=require("app.Logic.Difficult")
 Step=require("app.Logic.Step")
+Selected=require("app.Logic.Selected")
 eve=Eveluation.new()
 p={}
 local Chess=require("app.objects.Chess")
@@ -19,12 +20,9 @@ function GameScene:ctor()
     	for j=0,14 do
     		chessBoard[i][j]=Chess.new(-1)
     		chessBoard[i][j]:pos(2*(i+1)+608/15*i+608/30,2*(j+1)+608/15*j+608/30):addTo(chessBoardBackground)
-    		chessBoard[i][j]:setTouchEnabled(true)
+    		chessBoard[i][j]:setTouchEnabled(true):setPositionValue(i, j)
     	end
     end
-
-
-
 
     local scheduler = cc.Director:getInstance():getScheduler()
     local schedulerID = nil
@@ -40,7 +38,7 @@ function GameScene:ctor()
         if Step==2 then
             self.PlayerPlay()
 	    end
-     end,2,false)   
+     end,0.2,false)   
 end 
 
 function GameScene:beginGame()
@@ -49,6 +47,22 @@ end
 
 
 function GameScene:ComputerPlay()
+    
+    -- if Selected[5]==nil then
+    --     Selected[5]=1
+    --     chessBoard[Selected[1]][Selected[2]]:setBackground(1)
+    -- end
+    -- else
+    --     chessBoard[Selected[1]][Selected[2]]:setBackground(0)
+    --     chessBoard[Selected[3]][Selected[4]]:setBackground(1)
+    -- end
+
+    
+    -- Selected[1]=Selected[3]
+    -- Selected[2]=Selected[4]
+
+
+
     for i=0,14 do
         for j=0,14 do
             chessBoard[i][j]:setTouchEnabled(false)
@@ -63,11 +77,10 @@ function GameScene:ComputerPlay()
 			p[i][j]=chessBoard[i][j]:getValue()
 		end
 	end
-    print("get"..eve:Eveluate(p,0))
 	function AlphaBeta(depth,alpha,beta,turn)
         if depth==0 then
         	if Difficult==1 or Difficult==3 then
-        		return eve:Eveluate(p,1) 
+        		return eve:Eveluate(p,0) 
             else
                 return eve:Eveluate(p,0)
             end
@@ -157,10 +170,10 @@ function GameScene:ComputerPlay()
 	AlphaBeta(Difficult,-9999999,9999999,0)
     chessBoard[RES[1]][RES[2]]:setChess(0)
     Step=2
+    
 end
 
 function GameScene:PlayerPlay()
-    print("jjj")
     for i=0,14 do
         for j=0,14 do
             chessBoard[i][j]:setTouchEnabled(true)

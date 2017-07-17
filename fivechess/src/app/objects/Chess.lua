@@ -1,9 +1,11 @@
 Step=require("app.Logic.Step")
+Selected=require("app.Logic.Selected")
 local Chess=class("Chess",function()
 	return display.newSprite()
 end)
 
 function Chess:ctor(color)
+    self.location={}
 	self.value=0xFF
 	self.chess=nil
 	self.background=nil
@@ -25,12 +27,29 @@ function Chess:ctor(color)
 		    	if self.chess==nil then
 		    		self:setChess(1)
 		    	end
+                if Selected[5]==nil then
+                    Selected[1]=self:getPositionValue()[1]
+                    Selected[2]=self:getPositionValue()[2]
+                else
+                    Selected[3]=self:getPositionValue()[1]
+                    Selected[4]=self:getPositionValue()[2]
+                end
+
 		    elseif event.name == "moved" then
 	       	
 		    elseif event.name == "ended" then 
 		    end	    
 	    return true
 	end)
+end
+
+function Chess:setPositionValue(dx,dy)
+    self.location[1]=dx 
+    self.location[2]=dy
+end
+
+function Chess:getPositionValue()
+    return self.location 
 end
 
 function Chess:setChess(tcolor)
@@ -60,6 +79,20 @@ function Chess:setChess(tcolor)
      		self.chess=display.newSprite("image/black.png"):pos(20,20):addTo(self.background):setTag(0)
      	end
      end
+end
+
+function Chess:setBackground(color)
+     
+     if color==1 then
+        local cache=cc.Director:getInstance():getTextureCache():addImage("image/selected.png")
+        self.background:setTexture(cache)
+     end
+
+     if color==0 then
+        local cache=cc.Director:getInstance():getTextureCache():addImage("image/chessBackground.png")
+        self.background:setTexture(cache)
+    end
+
 end
 
 function Chess:getValue()

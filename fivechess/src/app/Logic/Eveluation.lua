@@ -47,17 +47,6 @@ function Eveluation:ctor()
     self.m_LineRecord={}
     self.TypeRecord={}
     self.TypeCount={}
-
-    local p={}
-    for i=0,14 do
-        p[i]={}
-        for j=0,14 do
-            p[i][j]=0xFF
-        end
-    end
-    p[3][4]=1
-    p[3][5]=1
-    print(self:Eveluate(p))
 end
 
 
