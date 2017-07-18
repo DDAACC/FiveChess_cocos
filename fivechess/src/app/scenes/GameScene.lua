@@ -10,9 +10,129 @@ local GameScene=class("GameScene",function()
 	return display.newScene()
 end)
 
+function Judge()
+    local res=-1
+    function JudgeLine(line,length)
+        local rres=-1
+        local i=0
+        local j=0
+        while i<length do
+            while line[i]== 0xFF and i<length do
+                i=i+1
+            end
+            j=i
+            while j+1<length and line[i]==line[j+1]  do
+                j=j+1
+            end
+            if j-i>3 then
+                return line[j]
+            end
+            i=j+1
+        end
+        return rres
+    end
+    local boardValue={}
+
+    for i=0,14 do
+        boardValue[i]={}
+        for j=0,14 do
+            boardValue[i][j]=chessBoard[i][j]:getValue()
+        end
+    end
+    local temp={}
+
+    for i=0,14 do
+        for j=0,14 do
+            temp[j]=boardValue[i][j]
+        end
+        res=JudgeLine(temp,15)
+        if res ~= -1 then
+            return res
+        end
+    end
+
+    for j=0,14 do
+        for i=0,14 do
+            temp[i]=boardValue[i][j]
+        end
+        res=JudgeLine(temp,15)
+        if res ~= -1 then
+            return res
+        end
+    end
+
+    local iii=-14
+    while iii<=0 do 
+        local num=0
+        for x=0,14 do
+            local y=x+iii
+            if y>=0 and y<=14 then
+                temp[num]=boardValue[x][y]
+                num=num+1
+            end
+        end
+        res=JudgeLine(temp,num)
+        if res ~= -1 then
+            return res
+        end
+        iii=iii+1
+    end
+    for i=1,14 do
+        local num=0
+        for y=0,14 do          
+            local x=y-i
+            if x>=0 and x<=14 then
+                temp[num]=boardValue[x][y]
+                num=num+1
+            end
+             
+        end
+        res=JudgeLine(temp,num)
+        if res ~= -1 then
+            return res
+        end
+    end
+
+    for i=0,14 do
+        local num=0
+        for x=0,14 do
+            
+            local y=i-x
+            if y>=0 and y<=14 then
+                temp[num]=boardValue[x][y]
+                num=num+1
+            end
+            
+        end
+        res=JudgeLine(temp,num)
+        if res ~= -1 then
+            return res
+        end
+    end
+
+    for i=15,28 do
+        local num=0
+        for y=0,14 do
+            local x=i-y
+            if x>=0 and x<=14 then
+                temp[num]=boardValue[x][y]
+                num=num+1
+            end
+        end
+        res=JudgeLine(temp,num)
+        if res ~= -1 then
+            return res
+        end
+    end
+    return res
+end
+
+
+
+
 function GameScene:ctor(args)
+    
     Difficult=args
-    print("GameSceneDifficult"..Difficult)
 	chessBoard={}
     local background=display.newSprite("image/background.jpg")
     :pos(display.cx,display.cy)
@@ -35,6 +155,8 @@ function GameScene:ctor(args)
 
     status=cc.uiloader:seekNodeByName(chessBoardUi, "Label_2")
 
+    endText=cc.uiloader:seekNodeByName(chessBoardUi, "Label_8"):setVisible(false)
+
     local retrunMain=cc.uiloader:seekNodeByName(chessBoardUi, "Image_4")
     retrunMain:setTouchEnabled(true)                      
     retrunMain:setTouchMode(cc.TOUCH_MODE_ONE_BY_ONE)     
@@ -55,6 +177,7 @@ function GameScene:ctor(args)
     restartGame:setTouchMode(cc.TOUCH_MODE_ONE_BY_ONE)     
     restartGame:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event)   
             if event.name == "began" then
+                endText:setVisible(false)
                 Step=0
                 for i=0,14 do
                   for j=0,14 do
@@ -93,6 +216,15 @@ function GameScene:ctor(args)
         if Step==2 then
             self.PlayerPlay()
 	    end
+        if Step==3 then
+            local temp
+            if Judge()==0 then
+                endText:setString("你失败了,电脑胜利!")
+            else
+                endText:setString("恭喜你战胜了电脑")
+            end
+            endText:setVisible(true)
+        end
      end,0.2,false)   
 end 
 
@@ -102,8 +234,11 @@ end
 
 
 function GameScene:ComputerPlay()
+    print(Judge())
     
-    
+    if Judge()==1 then
+        Step=3
+    end   
     chessBoard[Selected[1]][Selected[2]]:setBackground(0)
     chessBoard[Selected[3]][Selected[4]]:setBackground(1)
 
@@ -204,7 +339,6 @@ function GameScene:ComputerPlay()
         	local val=-AlphaBeta(depth-1,-beta,-alpha,temp)
         	if depth==Difficult and val>best then
         		best=val
-                print(best)
         		RES[1]=mx
         		RES[2]=my
         	end
@@ -402,7 +536,11 @@ function GameScene:ComputerPlay()
 
     status:setString("电脑落子("..RES[1]..","..RES[2]..")".. " 你的回合"):setAnchorPoint(0,1):pos(0,960)
 
-    Step=2
+    if Judge()==0 then
+        Step=3
+    else
+        Step=2
+    end
     
 end
 
@@ -414,5 +552,7 @@ function GameScene:PlayerPlay()
     end
     Step=0
 end
+
+
 
 return GameScene
