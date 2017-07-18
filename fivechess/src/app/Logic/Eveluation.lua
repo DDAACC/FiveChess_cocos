@@ -125,17 +125,17 @@ function Eveluation:Eveluate(position,bIsBlackTurn)
 
      if bIsBlackTurn==1 then
      	if self.TypeCount[BLACK][FIVE]==1 then
-     		return -9999
+     		return -999990
      	end
      	if self.TypeCount[WHITE][FIVE]==1 then
-     		return 9999
+     		return 999999
      	end
      else
      	if self.TypeCount[BLACK][FIVE]==1 then
-     		return 9999
+     		return 999999
      	end
      	if self.TypeCount[WHITE][FIVE]==1 then
-     		return -9999
+     		return -999990
      	end
      end
 

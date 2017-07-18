@@ -23,17 +23,13 @@ function Chess:ctor(color)
 	self:setTouchMode(cc.TOUCH_MODE_ONE_BY_ONE)		
 	self:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event)   
 		    if event.name == "began" then
-		    	Step=1
+		    	
 		    	if self.chess==nil then
+                    Step=1
 		    		self:setChess(1)
 		    	end
-                if Selected[5]==nil then
-                    Selected[1]=self:getPositionValue()[1]
-                    Selected[2]=self:getPositionValue()[2]
-                else
-                    Selected[3]=self:getPositionValue()[1]
-                    Selected[4]=self:getPositionValue()[2]
-                end
+                Selected[3]=self:getPositionValue()[1]
+                Selected[4]=self:getPositionValue()[2]
 
 		    elseif event.name == "moved" then
 	       	
@@ -41,6 +37,10 @@ function Chess:ctor(color)
 		    end	    
 	    return true
 	end)
+end
+
+function Chess:ResetValue()
+    self.value=0xFF
 end
 
 function Chess:setPositionValue(dx,dy)

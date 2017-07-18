@@ -1,2 +1,2 @@
-Difficult=2
+Difficult=1
 return Difficult

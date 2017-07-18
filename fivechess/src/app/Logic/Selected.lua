@@ -1,7 +1,6 @@
 Selected={}
-Selected[1]=nil
-Selected[2]=nil
-Selected[3]=nil
-Selected[4]=nil
-Selected[5]=nil
+Selected[1]=0
+Selected[2]=0
+Selected[3]=0
+Selected[4]=0
 return Selected
