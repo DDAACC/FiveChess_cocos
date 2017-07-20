@@ -220,7 +220,8 @@ function GameScene:ctor(args)
             local temp
             if Judge()==0 then
                 endText:setString("你失败了,电脑胜利!")
-            else
+            end
+            if Judge()==1 then
                 endText:setString("恭喜你战胜了电脑")
             end
             endText:setVisible(true)
@@ -536,7 +537,7 @@ function GameScene:ComputerPlay()
 
     status:setString("电脑落子("..RES[1]..","..RES[2]..")".. " 你的回合"):setAnchorPoint(0,1):pos(0,960)
 
-    if Judge()==0 then
+    if Judge()==0 or Judge()==1 then
         Step=3
     else
         Step=2
