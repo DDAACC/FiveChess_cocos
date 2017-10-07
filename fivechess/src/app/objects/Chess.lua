@@ -5,6 +5,8 @@ local Chess=class("Chess",function()
 end)
 
 function Chess:ctor(color)
+
+	print("Git test")
     self.location={}
 	self.value=0xFF
 	self.chess=nil

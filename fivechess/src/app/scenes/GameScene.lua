@@ -11,6 +11,7 @@ local GameScene=class("GameScene",function()
 end)
 
 function Judge()
+	print("Git test")
     local res=-1
     function JudgeLine(line,length)
         local rres=-1
