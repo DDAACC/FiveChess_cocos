@@ -5,6 +5,7 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
+	print("Git test")
 	print("MainSceneDiffcult:"..Difficult)
 	local background=display.newSprite("image/background.jpg")
     :pos(display.cx,display.cy)
